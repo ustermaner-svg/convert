@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>אסף...</title>
+</head>
+<body>
+
+<h2>ממיר מספרים:</h2>
+
+<form id="converterForm">
+    <label>המספר:</label>
+    <input type="text" id="inputNumber" required>
+    <br><br>
+
+    <label>סוג המרה:</label>
+    <select id="conversionType">
+        <option value="baseToDec">בסיס לעשרוני</option>
+        <option value="decToBase">עשרוני לבסיס</option>
+        <option value="binToGray">בינארי לגריי</option>
+        <option value="grayToBin">גריי לבינארי</option>
+        <option value="twosToBin">משלים ל2 לבינארי</option>
+        <option value="binToTwos">בינארי למשילים ל2</option>
+    </select>
+    <br><br>
+
+    <label>בסיס בשביל המרת בסיסים</label>
+    <input type="number" id="baseInput" min="2" max="36">
+    <br><br>
+
+    <button type="button" onclick="convert()">המרה</button>
+</form><br>
+<a href = "images/la.JPEG"><img src = "images/la.JPEG" height = "200" width = "1000"></a><br>
+<h3>תוצאה:</h3>
+<p id="result"></p>
+
+<script>
+function convert() {
+    const num = document.getElementById("inputNumber").value.trim();
+    const type = document.getElementById("conversionType").value;
+    const base = parseInt(document.getElementById("baseInput").value);
+    let res = "";
+
+    if(type === "baseToDec") {
+        res = parseInt(num, base).toString(10);
+    } else if(type === "decToBase") {
+        res = parseInt(num, 10).toString(base);
+    } else if(type === "binToGray") {
+        let n = parseInt(num,2);
+        res = (n ^ (n >> 1)).toString(2);
+    } else if(type === "grayToBin") {
+        let n = parseInt(num,2);
+        let mask = n;
+        while(mask != 0){
+            mask >>= 1;
+            n ^= mask;
+        }
+        res = n.toString(2);
+    } else if(type === "twosToBin") {
+        let n = parseInt(num, 2);
+        let bits = num.length;
+        if(n >= 1 << (bits-1)){
+            n = n - (1 << bits);
+        }
+        res = n.toString(2);
+    } else if(type === "binToTwos") {
+        let n = parseInt(num,2);
+        let bits = num.length;
+        if(n < 0){
+            n = (1 << bits) + n;
+        }
+        res = n.toString(2).padStart(bits,'0');
+    }
+
+    document.getElementById("result").textContent = res;
+}
+</script>
+</body>
+</html>
